@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 public class CourseManager {
-    Map<String,Integer> note = new HashMap<>();
+    Map<String,Float> note = new HashMap<>();
     Course[] courses;
     public CourseManager(){
         Connection conn=null;
@@ -58,24 +58,34 @@ public class CourseManager {
         Scanner in=new Scanner(System.in);
         String nume= in.nextLine();
         System.out.println("Introdu nota: ");
-        int nota= in.nextInt();
+        float nota= in.nextFloat();
         note.put(nume,nota);
     }
-    public int course_average(){
+    public float course_average(){
         System.out.println("Introdu curs:");
-        Scanner in=new Scanner(System.in);
-        String cursc= in.nextLine();
+        Scanner in = new Scanner(System.in);
+        String cursc = in.nextLine();
+        float average = 0;
+        int nr = 0;
         for(var c : courses)
         {
             if(c.name.equals(cursc))
             {
                 for(var d:c.students)
                 {
-                    if()
+                    for (var a : note.entrySet())
+                    {
+                       if(d.getFullName().equals(a.getKey()))
+                       {
+                           nr++;
+                           average+=a.getValue();
+                       }
+                    }
                 }
                 break;
             }
         }
+        return average/nr;
     }
    public void listStudentsInCourse(String courseName) {
        for (var course : courses) {
