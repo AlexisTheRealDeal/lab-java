@@ -1,13 +1,15 @@
 package classes;
 import java.sql.Connection;
-import java.util.Scanner; //pentru exercitiul 2 din laborator
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 public class CourseManager {
+    Map<String,Integer> note = new HashMap<>();
     Course[] courses;
-    Classes[] lista;
     public CourseManager(){
         Connection conn=null;
         courses=new Course[0];
@@ -28,7 +30,6 @@ public class CourseManager {
             System.out.println(c);
         }
     }
-    //EXERCITIUL 2 ADD A METHOD TO ManagerCursuri THAT ALLOWS YOU TO ENROLL A STUDENT INTO A COURSE BY SPECIFYNG THE COURSE NAME AND THE STUDENT OBJECT
     public void enroll(){
         String curs,firstn,lastn;
         int gn;
@@ -43,8 +44,8 @@ public class CourseManager {
                 firstn= in.nextLine();
                 System.out.println("Specify last name ");
                 lastn= in.nextLine();
-                System.out.println("Specify group number");
-                gn= in.nextInt();
+
+                gn= in.nextInt();System.out.println("Specify group number");
                 c.students[c.students.length].setFirstName(firstn);
                 c.students[c.students.length].setLastName(lastn);
                 c.students[c.students.length].setGroupNumber(gn);
@@ -52,7 +53,30 @@ public class CourseManager {
             }
         }
     }
-    //EXERCITIUL 3 EXTEND ManagerCursuri with a method listStudentInCourse(String courseName) that returns a list of all students enrolled in a given course
+    public void addnote(){
+        System.out.println("Introdu numele si prenumele studentului: ");
+        Scanner in=new Scanner(System.in);
+        String nume= in.nextLine();
+        System.out.println("Introdu nota: ");
+        int nota= in.nextInt();
+        note.put(nume,nota);
+    }
+    public int course_average(){
+        System.out.println("Introdu curs:");
+        Scanner in=new Scanner(System.in);
+        String cursc= in.nextLine();
+        for(var c : courses)
+        {
+            if(c.name.equals(cursc))
+            {
+                for(var d:c.students)
+                {
+                    if()
+                }
+                break;
+            }
+        }
+    }
    public void listStudentsInCourse(String courseName) {
        for (var course : courses) {
            if (course.name.equals(courseName)) // == ia hashu si il compara, .equals compara in functie de obiect/ proprietatile obiectului

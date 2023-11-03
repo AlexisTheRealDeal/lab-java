@@ -5,7 +5,6 @@ public class Course {
     String description;
     Professor teacher;
     Student[] students;
-    Integer[] note;
 
     public Course(String name, String description, Professor teacher, Student[] students) {
         this.name = name;

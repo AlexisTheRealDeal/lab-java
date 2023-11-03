@@ -11,7 +11,5 @@ public class Classes {
         CourseManager courseManager = new CourseManager();
         courseManager.addCourse(course);
         //courseManager.displayCourseToConsole();
-        Map<String,Integer[]> note = new HashMap<>();
     }
-
 }
