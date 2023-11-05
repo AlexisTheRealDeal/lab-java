@@ -61,10 +61,27 @@ public class CourseManager {
         float nota= in.nextFloat();
         note.put(nume,nota);
     }
-    public float course_average(){
-        System.out.println("Introdu curs:");
+    public float teacher_average()
+    {
+        System.out.println("Introdu nume profesor:");
         Scanner in = new Scanner(System.in);
-        String cursc = in.nextLine();
+        String prof = in.nextLine();
+        float average = 0;
+        int nr = 0;
+        for(var c:courses)
+        {
+            if(c.teacher.equals(prof))
+            {
+                nr++;
+                average+=course_average(c.name);
+            }
+        }
+        return average/nr;
+    }
+    public float course_average(String cursc){
+        /*System.out.println("Introdu curs:");
+        Scanner in = new Scanner(System.in);
+        String cursc = in.nextLine();*/
         float average = 0;
         int nr = 0;
         for(var c : courses)
