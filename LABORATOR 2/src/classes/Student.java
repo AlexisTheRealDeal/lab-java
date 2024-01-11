@@ -45,6 +45,14 @@ public class Student extends Person {
         this.groupNumber = groupNumber;
     }
 
+    public int getGrade(){
+        return grade;
+    }
+
+    public void setGrade(int grade){
+        this.grade = grade;
+    }
+
     public String getFullName(){
         return name + " " + surname;
     }

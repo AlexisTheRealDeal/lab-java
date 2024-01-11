@@ -1,22 +1,27 @@
 package classes;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Arrays;
+
 public class Course implements CourseOperations{
     String name;
     String description;
     Professor teacher;
-    Student[] students;
+    Set<Student> students;
 
     public Course(){
         this.name = "";
         this.description = "";
         this.teacher = new Professor();
-        this.students = new Student[0];
+        this.students = new HashSet<>();
     }
 
     public Course(String name, String description, Professor teacher, Student[] students){
         this.name = name;
         this.description = description;
         this.teacher = teacher;
-        this.students = students;
+        this.students = new HashSet<>(Arrays.asList(students));
     }
 
     public void updateProfessor(Professor teacher){
@@ -24,49 +29,25 @@ public class Course implements CourseOperations{
     }
 
     public void addStudent(Student student){
-        int newLength = students.length + 1;
-        Student[] aux = new Student[newLength];
-        int index = 0;
-        for(Student s : students){
-            aux[index++] = s;
-        }
-
-        aux[index] = student;
-
-        this.students = new Student[newLength];
-        System.arraycopy(aux, 0, students, 0, newLength);
+        students.add(student);
     }
 
     public void removeStudent(Student student){
-        int indexOfStudentToRemove = -9999;
-        for(int i = 0; i < students.length; i++){
-            if(students[i].equals(student)){
-                indexOfStudentToRemove = i;
+        students.remove(student);
+    }
+
+    public void updateStudent(Student student) {
+        for (Student existingStudent : students) {
+            if (existingStudent.equals(student)) {
+                existingStudent.setFirstName(student.getFirstName());
+                existingStudent.setLastName(student.getLastName());
+                existingStudent.setGroupNumber(student.getGroupNumber());
+                existingStudent.setGrade(student.getGrade());
                 break;
             }
         }
-
-        if(indexOfStudentToRemove!= -9999){
-            Student[] newStudentsArray = new Student[students.length - 1];
-            System.arraycopy(students, 0, newStudentsArray, 0, indexOfStudentToRemove);
-            System.arraycopy(students, indexOfStudentToRemove+1, newStudentsArray, indexOfStudentToRemove, students.length - indexOfStudentToRemove -1);
-            students = newStudentsArray;
-        }
     }
 
-    public void updateStudent(Student student){
-        int indexToUpdate = -9999;
-        for (int i = 0; i < students.length; i++) {
-            if (students[i].equals(student)) {
-                indexToUpdate = i;
-                break;
-            }
-        }
-
-        if (indexToUpdate != -9999) {
-            students[indexToUpdate] = student;
-        }
-    }
 
     public void updateCourse(String name, String description) {
         this.name = name;
@@ -80,30 +61,5 @@ public class Course implements CourseOperations{
             str += s + "\n";
         }
         return str;
-    }
-
-    @Override
-    public void UpdateProfessor(Professor p) {
-
-    }
-
-    @Override
-    public void AddStudent(Student student) {
-
-    }
-
-    @Override
-    public void RemoveStudent(Student student) {
-
-    }
-
-    @Override
-    public void UpdateStudent(Student student) {
-
-    }
-
-    @Override
-    public void UpdateCourse(String name, String description) {
-
     }
 }
