@@ -1,19 +1,22 @@
 package classes;
 
-public class Professor {
-    String firstName;
-    String lastName;
-
-    public String toString() {
-        return "Professor[" + "firstName=" + firstName + ", lastName= " + lastName + ']';
+public class Professor extends Person {
+    @Override
+    public String toString(){
+        return "Professor{" + "firstName=" + name + ", lastName=" + surname + '}';
     }
 
-    public Professor(String firstName, String lastName) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-
+    public Professor(){
+        super();
     }
+
+    public Professor(String firstName, String lastName){
+        super();
+        this.name = firstName;
+        this.surname = lastName;
+    }
+
     public String getFullName(){
-        return firstName+lastName;
+        return name + " " + surname;
     }
 }

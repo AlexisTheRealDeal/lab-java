@@ -1,51 +1,52 @@
 package classes;
 
-import java.util.Objects;
-
-public class Student {
-    String firstName;
-    String lastName;
+public class Student extends Person {
     int groupNumber;
-    public Student(String firstName, String lastName, int groupNumber){
-        this.firstName=firstName;
-        this.lastName=lastName;
-        this.groupNumber=groupNumber;
+    int grade;
+
+    public Student(){
+        super();
     }
+
+    public Student(String firstName, String lastName, int groupNumber, int grade){
+        super();
+        this.name = firstName;
+        this.surname = lastName;
+        this.groupNumber = groupNumber;
+        this.grade = grade;
+    }
+
+    @Override
     public String toString(){
-        return "Student["+"firstName="+firstName+", lastName="+lastName+", groupNumber="+groupNumber+']';
+        return "Student{" + "firstName=" + name + ", lastName=" + surname + ", groupNumber=" + groupNumber + '}';
     }
+
     public String getFirstName(){
-        return firstName;
+        return name;
     }
-    public void setFirstName (String firstName){
-        this.firstName=firstName;
+
+    public void setFirstName(String firstName){
+        this.name = firstName;
     }
+
     public String getLastName(){
-        return lastName;
+        return surname;
     }
-    public void setLastName (String lastName){
-        this.lastName=lastName;
+
+    public void setLastName(String lastName){
+        this.surname = lastName;
     }
+
     public int getGroupNumber(){
         return groupNumber;
     }
+
     public void setGroupNumber(int groupNumber){
-        this.groupNumber=groupNumber;
+        this.groupNumber = groupNumber;
     }
+
     public String getFullName(){
-        return firstName+lastName;
+        return name + " " + surname;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Student student = (Student) o;
-        return groupNumber == student.groupNumber && Objects.equals(firstName, student.firstName) && Objects.equals(lastName, student.lastName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(firstName, lastName, groupNumber);
-    }
 }

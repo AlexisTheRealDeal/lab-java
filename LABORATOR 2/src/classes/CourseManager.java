@@ -1,118 +1,131 @@
 package classes;
+
 import java.sql.Connection;
-import java.util.Scanner;
-import java.util.HashMap;
-import java.util.Map;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-public class CourseManager {
-    Map<String,Float> note = new HashMap<>();
+
+public class CourseManager implements ManagerCourseOperations{
     Course[] courses;
+
     public CourseManager(){
-        Connection conn=null;
-        courses=new Course[0];
+        Connection conn = null;
+        courses = new Course[0];
     }
+
     public void addCourse(Course course){
-        int newLength = courses.length +1;
-        Course[] aux=new Course[newLength];
-        int index=0;
-        for(Course c: courses){
+        int newLength = courses.length + 1;
+        Course[] aux = new Course[newLength];
+        int index = 0;
+
+        for(Course c : courses){
             aux[index++]=c;
         }
-        aux[index]=course;
-        this.courses= new Course[newLength];
-        System.arraycopy(aux,0,courses,0, newLength);
+        aux[index] = course;
+        this.courses = new Course[newLength];
+        System.arraycopy(aux, 0, courses, 0, newLength);
     }
-    public void displayCoursesToConsole(){
-        for(Course c: courses){
-            System.out.println(c);
+
+    public void updateCourse(Course course){
+        int indexToUpdate = -9999;
+        for(int i = 0; i < courses.length; i++){
+            if(courses[i].equals(course)){
+                indexToUpdate = i;
+                break;
+            }
+
+        }
+
+        if (indexToUpdate != -9999) {
+            courses[indexToUpdate] = course;
         }
     }
-    public void enroll(){
-        String curs,firstn,lastn;
-        int gn;
-        System.out.println("Specify course name");
-        Scanner in = new Scanner(System.in);
-        curs = in.nextLine();
-        for(var c:courses)
-        {
-            if(c.name.equals(curs))
-            {
-                System.out.println("Specify first name ");
-                firstn= in.nextLine();
-                System.out.println("Specify last name ");
-                lastn= in.nextLine();
 
-                gn= in.nextInt();System.out.println("Specify group number");
-                c.students[c.students.length].setFirstName(firstn);
-                c.students[c.students.length].setLastName(lastn);
-                c.students[c.students.length].setGroupNumber(gn);
+    public void deleteCourse(Course course){
+        int indexOfCourseToRemove = -9999;
+        for(int i=0; i < courses.length; i++){
+            if(courses[i].equals(course)){
+                indexOfCourseToRemove = i;
+                break;
+            }
+        }
+
+        if(indexOfCourseToRemove != -9999){
+            Course[] newCourseArray = new Course[courses.length - 1];
+            System.arraycopy(courses, 0, newCourseArray, 0, indexOfCourseToRemove);
+            System.arraycopy(courses, indexOfCourseToRemove + 1, newCourseArray, indexOfCourseToRemove, courses.length - indexOfCourseToRemove - 1);
+            courses = newCourseArray;
+        }
+    }
+
+    public void displayCoursesToConsole(){
+        for(Course course: courses){
+            System.out.println(course);
+        }
+    }
+
+    public void enrollStudentInCourse(String courseName, Student student) {
+        for (Course course : courses) {
+            if (course.name.equals(courseName)) {
+                course.addStudent(student);
                 break;
             }
         }
     }
-    public void addnote(){
-        System.out.println("Introdu numele si prenumele studentului: ");
-        Scanner in=new Scanner(System.in);
-        String nume= in.nextLine();
-        System.out.println("Introdu nota: ");
-        float nota= in.nextFloat();
-        note.put(nume,nota);
-    }
-    public float teacher_average()
-    {
-        System.out.println("Introdu nume profesor:");
-        Scanner in = new Scanner(System.in);
-        String prof = in.nextLine();
-        float average = 0;
-        int nr = 0;
-        for(var c:courses)
-        {
-            if(c.teacher.equals(prof))
-            {
-                nr++;
-                average+=course_average(c.name);
-            }
-        }
-        return average/nr;
-    }
-    public float course_average(String cursc){
-        /*System.out.println("Introdu curs:");
-        Scanner in = new Scanner(System.in);
-        String cursc = in.nextLine();*/
-        float average = 0;
-        int nr = 0;
-        for(var c : courses)
-        {
-            if(c.name.equals(cursc))
-            {
-                for(var d:c.students)
-                {
-                    for (var a : note.entrySet())
-                    {
-                       if(d.getFullName().equals(a.getKey()))
-                       {
-                           nr++;
-                           average+=a.getValue();
-                       }
-                    }
+
+    public void listStudentsInCourse(String courseName) {
+        for (Course course : courses) {
+            if (course.name.equals(courseName)) {
+                System.out.println("Studentii din cursul " + course.name + " sunt:");
+
+                for(Student student : course.students){
+                    System.out.println(student.getFullName());
                 }
                 break;
             }
+            else{
+                System.out.println("Nu exista nici un student in cursul " + course.name);
+            }
         }
-        return average/nr;
     }
-   public void listStudentsInCourse(String courseName) {
-       for (var course : courses) {
-           if (course.name.equals(courseName)) // == ia hashu si il compara, .equals compara in functie de obiect/ proprietatile obiectului
-           {
-               for (var student : course.students) {
-                   System.out.println(student.getFullName());
-               }
-               break;
-           }
-       }
-   }
+
+    public void calculateAverageGradeForCourse(String courseName) {
+        for (Course course : courses) {
+            if (course.name.equals(courseName)) {
+                Student[] studentsInCourse = course.students;
+
+                if (studentsInCourse.length == 0) {
+                    System.out.println("Nu exista nici un student in cursul " + course.name);
+                }
+                int totalGrade = 0;
+
+                for (Student student : studentsInCourse) {
+                    totalGrade += student.grade;
+                }
+                System.out.println("Media cursului " + course.name + " este: " + (double) totalGrade / studentsInCourse.length);
+            }
+            else{
+                System.out.println("Cursul " + course.name + " nu exista");
+            }
+        }
+    }
+
+    public void calculateAverageGradeByProfessor(Professor professor) {
+        int totalGrade = 0;
+        int totalStudents = 0;
+
+        for (Course course : courses) {
+            if (course.teacher.equals(professor)) {
+                Student[] studentsInCourse = course.students;
+                totalStudents += studentsInCourse.length;
+
+                for (Student student : studentsInCourse) {
+                    totalGrade += student.grade;
+                }
+            }
+        }
+
+        System.out.println("Media tuturor cursurilor ale profesorului " + professor.getFullName() + " este: " + (double) totalGrade / totalStudents);
+    }
 }
